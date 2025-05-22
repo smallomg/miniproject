@@ -1,0 +1,78 @@
+package com.example.demo.service;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.example.demo.dao.IBoardDao;
+import com.example.demo.dto.FaqDTO;
+import com.example.demo.dto.NoticeDTO;
+import com.example.demo.dto.QnaDTO;
+
+@Service
+public class BoardService {
+
+	@Autowired
+	private IBoardDao boardDao;
+
+//    회원용
+	// qna 등록 처리
+	public void insertQna(QnaDTO qna) {
+		boardDao.insertQna(qna);
+	}
+
+	// qna 목록 조회
+	public List<QnaDTO> getQnaList(String id) {
+		return boardDao.selectQnaList(id);
+	}
+
+	// qna 상세 조회
+	public QnaDTO getQnaByQno(String qno) {
+		return boardDao.selectQnaByQno(qno);
+	}
+
+	// faq 목록 조회
+	public List<FaqDTO> getFaqList() {
+		return boardDao.selectFaqList();
+	}
+	
+	// notice 공지 목록 조회
+	public List<NoticeDTO> getNoticeList(){
+		return boardDao.selectNoticeList();
+		
+	}
+
+// =============================================================================================
+//    관리자용 
+
+	// qna 답변 등록
+	public void updateAnswer(QnaDTO qna) {
+		boardDao.updateAnswer(qna);
+	}
+	
+	// qna 대기만 조회
+	public List<QnaDTO> workList() {
+		return boardDao.selectQnaByQstatus();
+	}
+
+	// faq 등록 처리
+	public void insertFaq(FaqDTO faq) {
+		boardDao.insertFaq(faq);
+	}
+
+	// faq 삭제 처리
+	public void deleteFaq(String fno) {
+		boardDao.deleteFaq(fno);
+	}
+	
+	// notice 공지사항 등록
+	public void insertNotice(NoticeDTO notice) {
+		boardDao.insertNotice(notice);
+	}
+
+	// notice 공지사항 삭제 
+	public void deleteNotice(String nid) {
+		boardDao.deleteNotice(nid);
+	}
+}
