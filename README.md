@@ -1,3 +1,3 @@
 # miniproject
 
-머지
+# 연습
