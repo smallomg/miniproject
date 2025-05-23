@@ -7,8 +7,10 @@ import org.springframework.stereotype.Service;
 
 import com.example.demo.dao.IBoardDao;
 import com.example.demo.dto.FaqDTO;
+import com.example.demo.dto.JoinDTO;
 import com.example.demo.dto.NoticeDTO;
 import com.example.demo.dto.QnaDTO;
+import com.example.demo.dto.SearchLogDTO;
 
 @Service
 public class BoardService {
@@ -75,4 +77,25 @@ public class BoardService {
 	public void deleteNotice(String nid) {
 		boardDao.deleteNotice(nid);
 	}
+	
+//===========================================
+	// 검색
+	
+	// 검색 결과 조회
+	public List<JoinDTO> getJoinList(String keyword){
+		return boardDao.selectJoinList(keyword);
+	}
+	
+	// 검색 저장
+	public void insertKeyword(SearchLogDTO log) {
+		boardDao.insertKeyword(log);
+	}
+
+	// 인기 검색 목록 보여주기
+	public List<SearchLogDTO> getLogList() {
+		return boardDao.selectLogList();
+		
+	}
+	
+	
 }

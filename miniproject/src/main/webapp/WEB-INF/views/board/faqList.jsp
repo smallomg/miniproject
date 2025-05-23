@@ -8,6 +8,7 @@
 <title>Insert title here</title>
 </head>
 <body>
+<jsp:include page="/WEB-INF/views/common/header.jsp" />
 	<h1>FAQ 목록 조회</h1>
 
 	<table border="1">

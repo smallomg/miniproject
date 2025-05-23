@@ -11,4 +11,5 @@ public class MemberDTO {
 	private String name;
 	private String phone;
 	private Date birth;
+	private String aim;
 }

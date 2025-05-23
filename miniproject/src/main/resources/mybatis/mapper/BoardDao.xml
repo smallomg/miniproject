@@ -36,11 +36,13 @@
 	</select>
 
 	<!-- FAQ 목록 조회 -->
-	<select id="selectFaqList" resultType="com.example.demo.dto.FaqDTO">
+	<select id="selectFaqList"
+		resultType="com.example.demo.dto.FaqDTO">
 		SELECT fno, ftitle, fcontent FROM FAQ
 	</select>
 
-	<select id="selectNoticeList" resultType="com.example.demo.dto.NoticeDTO">
+	<select id="selectNoticeList"
+		resultType="com.example.demo.dto.NoticeDTO">
 		SELECT * FROM notice
 	</select>
 
@@ -54,38 +56,93 @@
 		WHERE qno = #{qno}
 	</update>
 
-	<!-- 관리자 FAQ 등록-->
-	<insert id="insertFaq" parameterType="com.example.demo.dto.FaqDTO">
-		INSERT INTO FAQ (fno, ftitle, fcontent) VALUES('F' || LPAD(seq_qna.NEXTVAL, 3, '0'),
+	<!-- 관리자 FAQ 등록 -->
+	<insert id="insertFaq"
+		parameterType="com.example.demo.dto.FaqDTO">
+		INSERT INTO FAQ (fno, ftitle, fcontent) VALUES('F' ||
+		LPAD(seq_qna.NEXTVAL, 3, '0'),
 		#{ftitle}, #{fcontent}
 		)
 	</insert>
-	
-	<!-- 관리자 FAQ 삭제-->
+
+	<!-- 관리자 FAQ 삭제 -->
 	<delete id="deleteFaq">
 		DELETE FROM FAQ WHERE fno=#{fno}
 	</delete>
-	
-	<!-- 관리자 공지사항 등록-->
-	<insert id="insertNotice" parameterType="com.example.demo.dto.NoticeDTO">
+
+	<!-- 관리자 공지사항 등록 -->
+	<insert id="insertNotice"
+		parameterType="com.example.demo.dto.NoticeDTO">
 		INSERT INTO notice (nid, ntitle, ncontent, ndate)
 		VALUES('N' || LPAD(seq_notice.NEXTVAL, 3, '0'),
-		#{ntitle}, #{ncontent}, #{ndate}
+		#{ntitle}, #{ncontent},
+		#{ndate}
 		)
 	</insert>
-	
-	<!--  관리자 QNA 대기 작업 확인-->
-	<select id="selectQnaByQstatus" resultType="com.example.demo.dto.QnaDTO">
+
+	<!-- 관리자 QNA 대기 작업 확인 -->
+	<select id="selectQnaByQstatus"
+		resultType="com.example.demo.dto.QnaDTO">
 		SELECT qno, id, qtitle, qcontent,qanswer, qdate, qstatus,
 		qtype
 		FROM QNA
 		WHERE qstatus = '대기'
 	</select>
-	
+
 	<!-- 관리자 Notice 삭제 -->
 	<delete id="deleteNotice">
 		DELETE FROM notice WHERE nid=#{nid}
 	</delete>
-	
+
+
+	<!-- 다중 검색 기능 -->
+	<select id="selectJoinList" parameterType="String"
+		resultType="com.example.demo.dto.JoinDTO">
+		SELECT qtitle AS title, qcontent AS content, 'QNA' AS
+		source
+		FROM qna
+		WHERE qtitle LIKE '%' || #{keyword} || '%'
+		OR qcontent
+		LIKE '%' || #{keyword} || '%'
+
+		UNION
+
+		SELECT ftitle AS title, fcontent AS
+		content, 'FAQ' AS source
+		FROM faq
+		WHERE ftitle LIKE '%' || #{keyword} ||
+		'%'
+		OR fcontent LIKE '%' || #{keyword} || '%'
+
+		UNION
+
+		SELECT ntitle AS
+		title, ncontent AS content, 'NOTICE' AS source
+		FROM notice
+		WHERE ntitle
+		LIKE '%' || #{keyword} || '%'
+		OR ncontent LIKE '%' || #{keyword} || '%'
+	</select>
+
+	<!-- 인기 검색어 추천 등록 -->
+	<insert id="insertKeyword"
+		parameterType="com.example.demo.dto.SearchLogDTO">
+		INSERT INTO search_log(sid, keyword, today) VALUES('S'
+		|| LPAD(seq_search_log.NEXTVAL, 3, '0'),#{keyword},#{today,
+		jdbcType=DATE})
+	</insert>
+
+	<!-- 인기 검색어 목록 5개만 뽑기 -->
+	<select id="selectLogList"
+		resultType="com.example.demo.dto.SearchLogDTO">
+		SELECT * FROM (
+		SELECT keyword, COUNT(*) AS count
+		FROM search_log
+		WHERE TRUNC(today) = TRUNC(SYSDATE)
+		GROUP BY keyword
+		ORDER BY count DESC
+		)
+		WHERE ROWNUM &lt;=5
+	</select>
 
 </mapper>

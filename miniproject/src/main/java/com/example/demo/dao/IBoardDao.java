@@ -5,8 +5,10 @@ import java.util.List;
 import org.apache.ibatis.annotations.Mapper;
 
 import com.example.demo.dto.FaqDTO;
+import com.example.demo.dto.JoinDTO;
 import com.example.demo.dto.NoticeDTO;
 import com.example.demo.dto.QnaDTO;
+import com.example.demo.dto.SearchLogDTO;
 
 @Mapper
 public interface IBoardDao {
@@ -36,6 +38,15 @@ public interface IBoardDao {
 	List<QnaDTO> selectQnaByQstatus(); //  관리자 Qna에서 대기만 보게하는 용
 
 	void deleteNotice(String nid); // 관리자 Notice 공지사항 삭제용
+
+	
+	
+	// 검색
+	List<JoinDTO> selectJoinList(String keyword); // 검색 창 검색
+
+	void insertKeyword(SearchLogDTO log); // 인기 검색어 등록하기
+
+	List<SearchLogDTO> selectLogList(); // 인기 검색어 목록 보여주기
 
 	
 }

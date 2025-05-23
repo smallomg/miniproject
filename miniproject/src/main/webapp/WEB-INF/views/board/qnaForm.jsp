@@ -7,6 +7,7 @@
 <title>Insert title here</title>
 </head>
 <body>
+<jsp:include page="/WEB-INF/views/common/header.jsp" />
 <form action="/board/qnaInsert" method="post">
     <table border="1">
         <tr>

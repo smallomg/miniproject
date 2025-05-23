@@ -26,19 +26,10 @@ public class AdminBoardController {
 
 	@Autowired
 	private BoardService boardService;
-	@Autowired
-	private AdminSession adminSession;
 
 	// 관리자 qna 목록
 	@GetMapping("/qnaList")
 	public String adminQnaList(Model model) {
-		// ✅ 개발용: 로그인 없이 강제 로그인 처리
-		if (!adminSession.isLoggedIn()) {
-			AdminDTO admin = new AdminDTO();
-			admin.setAid("admin"); // 샘플 관리자 아이디
-			admin.setAname("관리자용"); // (선택) 이름도 설정
-			adminSession.login(admin); // 세션에 저장
-		}
 
 		List<QnaDTO> qnaList = boardService.workList();
 		model.addAttribute("qnaList", qnaList);
@@ -48,7 +39,6 @@ public class AdminBoardController {
 	// 관리자 qna 질문 폼 페이지
 	@GetMapping("/answerForm")
 	public String answerForm(@RequestParam("qno") String qno, Model model) {
-		// if (!adminSession.isLoggedIn()) return "redirect:/admin/login";
 		QnaDTO qna = boardService.getQnaByQno(qno);
 		model.addAttribute("qna", qna);
 		return "admin/answerForm";
@@ -57,7 +47,6 @@ public class AdminBoardController {
 	// 관리자 qna 답변 등록 처리
 	@PostMapping("/answerUpdate")
 	public String answerSubmit(QnaDTO qna) {
-		// if (!adminSession.isLoggedIn()) return "redirect:/admin/login";
 		qna.setQstatus("완료");
 		boardService.updateAnswer(qna);
 		return "redirect:/admin/qnaList";

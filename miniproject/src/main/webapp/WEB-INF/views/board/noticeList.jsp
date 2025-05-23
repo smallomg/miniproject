@@ -9,6 +9,7 @@
 <title>공지사항</title>
 </head>
 <body>
+<jsp:include page="/WEB-INF/views/common/header.jsp" />
 	<h1>Notice 공지사항 페이지</h1>
 
 	<table border="1">

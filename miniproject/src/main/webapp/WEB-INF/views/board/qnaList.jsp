@@ -9,6 +9,7 @@
 <title>QnA 목록</title>
 </head>
 <body>
+<jsp:include page="/WEB-INF/views/common/header.jsp" />
 	<h1>QnA 목록 사용자용</h1>
 
 	<table border="1">

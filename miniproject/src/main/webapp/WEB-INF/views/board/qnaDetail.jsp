@@ -5,6 +5,7 @@
 <title>QnA 상세</title>
 </head>
 <body>
+<jsp:include page="/WEB-INF/views/common/header.jsp" />
 	<h2>QnA 상세 보기</h2>
 
 	<table border="1">
@@ -38,6 +39,6 @@
 		</tr>
 	</table>
 
-	<a href="/board/qnaList">← 목록으로 돌아가기</a>
+	<a href="/board/service_center">← 목록으로 돌아가기</a>
 </body>
 </html>
